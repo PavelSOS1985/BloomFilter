@@ -1,13 +1,13 @@
-import java.lang.reflect.Array;
+import java.util.BitSet;
 
 public class BloomFilter {
     public int filter_len;
-    byte[] bloomFilter;
+    public BitSet bitSet;
 
     public BloomFilter(int f_len) {
         filter_len = f_len;
-        bloomFilter = new byte[f_len];
         // создаём битовый массив длиной f_len ...
+        bitSet = new BitSet(f_len);
     }
 
     // хэш-функции
@@ -42,14 +42,14 @@ public class BloomFilter {
         // добавляем строку str1 в фильтр
         int index1 = hash1(str1);
         int index2 = hash2(str1);
-        bloomFilter[index1] = 1;
-        bloomFilter[index2] = 1;
+        bitSet.set(index1);
+        bitSet.set(index2);
     }
 
     public boolean isValue(String str1) {
         // проверка, имеется ли строка str1 в фильтре
         int index1 = hash1(str1);
         int index2 = hash2(str1);
-        return bloomFilter[index1] == 1 && bloomFilter[index2] == 1;
+        return bitSet.get(index1) && bitSet.get(index2);
     }
 }
